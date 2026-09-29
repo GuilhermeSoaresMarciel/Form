@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import GetData from "./../utils/GetData.tsx";
 
@@ -17,8 +18,19 @@ const SettingsDefault = {
 const data = GetData();
 
 export default function PageDisplay() {
-  const [getName] = useState(data.name);
-  const [getAge] = useState(data.age);
+  const navigate = useNavigate();
+  const [getName] = useState(data?.name ?? "");
+  const [getAge] = useState(data?.age ?? "");
+
+  useEffect(() => {
+    if (!data) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div
